@@ -40,9 +40,9 @@ install_dependencies() {
     
     # Essential tools
     sudo apt install -y \
-        curl wget git jq yq \
-        nmap masscan rustscan \
-        httpx subfinder amass \
+        curl wget git jq \
+        nmap masscan \
+        subfinder amass \
         testssl.sh sslyze \
         nuclei \
         sqlmap \
@@ -55,7 +55,7 @@ install_dependencies() {
         hydra medusa \
         wireshark tcpdump \
         aircrack-ng \
-        social-engineer-toolkit \
+        setoolkit \
         recon-ng \
         theharvester \
         maltego \
@@ -106,6 +106,21 @@ install_dependencies() {
     go install -v github.com/tomnomnom/gf@latest
     go install -v github.com/lc/gau@latest
     go install -v github.com/hakluke/hakrawler@latest
+    
+    # Install RustScan via cargo if available
+    if command -v cargo >/dev/null 2>&1; then
+        cargo install rustscan
+    else
+        log_warning "Rust not found, skipping rustscan installation"
+        log_info "You can install Rust with: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+    fi
+    
+    # Install additional tools manually
+    log_info "Installing additional security tools..."
+    
+    # Install yq (YAML processor)
+    sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+    sudo chmod +x /usr/local/bin/yq
     
     # Docker containers for specialized tools
     docker pull owasp/zap2docker-stable
