@@ -32,68 +32,104 @@ check_kali() {
     fi
 }
 
+install_package() {
+    local package="$1"
+    if sudo apt install -y "$package" 2>/dev/null; then
+        log_success "Installed $package"
+    else
+        log_warning "Failed to install $package - skipping"
+    fi
+}
+
 install_dependencies() {
     log_info "Installing required dependencies..."
     
     # Update package lists
     sudo apt update
     
-    # Essential tools
-    sudo apt install -y \
-        curl wget git jq \
-        nmap masscan \
-        subfinder amass \
-        testssl.sh sslyze \
-        nuclei \
-        sqlmap \
-        gobuster dirb dirbuster \
-        nikto \
-        whatweb \
-        wpscan \
-        metasploit-framework \
-        john hashcat \
-        hydra medusa \
-        wireshark tcpdump \
-        aircrack-ng \
-        setoolkit \
-        recon-ng \
-        theharvester \
-        maltego \
-        burpsuite \
-        zaproxy \
-        python3-pip \
-        docker.io docker-compose \
-        golang-go \
-        nodejs npm \
-        ruby-dev \
-        openjdk-11-jdk
+    # Essential tools - Core packages (install with error handling)
+    local core_packages=(
+        "curl" "wget" "git" "jq"
+        "nmap" "masscan"
+        "subfinder" "amass"
+        "testssl.sh" "sslyze"
+        "nuclei"
+        "sqlmap"
+        "gobuster" "dirb" "dirbuster"
+        "nikto"
+        "whatweb"
+        "wpscan"
+        "metasploit-framework"
+        "john" "hashcat"
+        "hydra" "medusa"
+        "wireshark" "tcpdump"
+        "aircrack-ng"
+        "recon-ng"
+        "theharvester"
+        "maltego"
+        "burpsuite"
+        "zaproxy"
+        "python3-pip"
+        "docker.io" "docker-compose"
+        "golang-go"
+        "nodejs" "npm"
+        "ruby-dev"
+        "openjdk-11-jdk"
+    )
     
-    # Python tools
-    pip3 install --upgrade \
-        semgrep \
-        bandit \
-        safety \
-        detect-secrets \
-        gitleaks \
-        truffleHog \
-        cloudsploit \
-        scoutsuite \
-        prowler \
-        pacu \
-        pwntools \
-        impacket \
-        bloodhound \
-        crackmapexec \
-        responder \
-        mitm6 \
-        requests \
-        beautifulsoup4 \
-        selenium \
-        shodan \
-        censys \
-        dnsrecon \
-        sublist3r \
-        paramspider
+    log_info "Installing core packages..."
+    for package in "${core_packages[@]}"; do
+        install_package "$package"
+    done
+    
+    # Install SET (Social Engineer Toolkit) separately
+    log_info "Installing Social Engineer Toolkit..."
+    if ! command -v setoolkit >/dev/null 2>&1; then
+        git clone https://github.com/trustedsec/social-engineer-toolkit /tmp/set
+        cd /tmp/set
+        sudo python3 setup.py install
+        cd -
+        rm -rf /tmp/set
+    else
+        log_success "Social Engineer Toolkit already installed"
+    fi
+    
+    # Python tools with error handling
+    log_info "Installing Python security tools..."
+    local python_packages=(
+        "semgrep"
+        "bandit"
+        "safety"
+        "detect-secrets"
+        "gitleaks"
+        "truffleHog"
+        "cloudsploit"
+        "scoutsuite"
+        "prowler"
+        "pacu"
+        "pwntools"
+        "impacket"
+        "bloodhound"
+        "crackmapexec"
+        "responder"
+        "mitm6"
+        "requests"
+        "beautifulsoup4"
+        "selenium"
+        "shodan"
+        "censys"
+        "dnsrecon"
+        "sublist3r"
+        "paramspider"
+    )
+    
+    for package in "${python_packages[@]}"; do
+        if pip3 install --upgrade "$package" 2>/dev/null; then
+            log_success "Installed Python package: $package"
+        else
+            log_warning "Failed to install Python package: $package"
+        fi
+    done
     
     # Go tools
     go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
