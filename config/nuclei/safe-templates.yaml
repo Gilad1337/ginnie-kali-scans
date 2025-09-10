@@ -1,0 +1,9 @@
+# Nuclei Safe Templates (stub)
+templates:
+  - cves
+  - misconfiguration
+  - exposures
+allowlist:
+  - ginnie.co.il
+  - smartshop.co.il
+rate_limit: 20

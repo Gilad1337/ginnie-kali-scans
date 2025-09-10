@@ -1,0 +1,165 @@
+# Enhanced Configuration with Advanced Security Scenarios
+
+environments:
+  production:
+    domains:
+      - ginnie.co.il
+      - smartshop.co.il
+      - api.ginnie.co.il
+      - admin.ginnie.co.il
+      - portal.smartshop.co.il
+    subdomains_wordlist:
+      - admin
+      - api
+      - dev
+      - test
+      - staging
+      - portal
+      - dashboard
+      - mail
+      - ftp
+      - vpn
+    cidr:
+      - 100.64.0.0/10
+      - 10.0.0.0/8
+    gcp_projects:
+      - ginnie-prod
+      - ginnie-staging
+      - ginnie-security
+    aws_accounts:
+      - ginnie-prod-aws
+      - ginnie-dev-aws
+    azure_subscriptions:
+      - ginnie-prod-azure
+    kubernetes_contexts:
+      - ginnie-prod-k8s
+      - ginnie-staging-k8s
+    services:
+      - Home Assistant:8123
+      - Homebridge:8581
+      - Scrypted:10443
+      - AdGuardHome:3000
+      - Nginx:80,443
+      - Docker:2376
+      - SSH:22
+      - Tailscale:41641
+    api_endpoints:
+      - https://api.ginnie.co.il/v1
+      - https://api.ginnie.co.il/v2
+      - https://portal.smartshop.co.il/api
+    cms_targets:
+      - type: wordpress
+        url: https://blog.ginnie.co.il
+      - type: custom
+        url: https://portal.smartshop.co.il
+    email_domains:
+      - ginnie.co.il
+      - smartshop.co.il
+    wireless_networks:
+      - SSID: Ginnie-Guest
+        security: WPA2
+      - SSID: Ginnie-IoT
+        security: WPA3
+    
+  staging:
+    domains:
+      - staging.ginnie.co.il
+      - test.smartshop.co.il
+    cidr:
+      - 192.168.100.0/24
+    gcp_projects:
+      - ginnie-staging
+    services:
+      - Home Assistant:8123
+      - Homebridge:8581
+      - Test-API:3000
+    
+  lab:
+    domains:
+      - lab.ginnie.local
+      - testbed.ginnie.local
+    cidr:
+      - 192.168.200.0/24
+    services:
+      - Vulnerable-App:8080
+      - Test-Database:5432
+      - Mock-API:3000
+    red_team_authorized: true
+    purple_team_authorized: true
+    
+security_testing:
+  web_application:
+    common_parameters:
+      - id
+      - user
+      - page
+      - category
+      - search
+      - q
+      - query
+      - name
+      - email
+      - comment
+      - message
+      - file
+      - path
+      - url
+      - redirect
+    file_extensions:
+      - .php
+      - .asp
+      - .aspx
+      - .jsp
+      - .do
+      - .action
+      - .cfm
+      - .pl
+      - .py
+    directories:
+      - /admin
+      - /administrator
+      - /login
+      - /dashboard
+      - /panel
+      - /api
+      - /backup
+      - /config
+      - /test
+      - /dev
+      
+  network_security:
+    common_ports:
+      - 21,22,23,25,53,80,110,135,139,143,443,993,995,1433,3306,3389,5432,5900,8080,8443
+    service_ports:
+      - 8123  # Home Assistant
+      - 8581  # Homebridge
+      - 10443 # Scrypted
+      - 3000  # AdGuardHome
+      - 41641 # Tailscale
+      
+compliance_frameworks:
+  iso27001:
+    enabled: true
+    controls:
+      - A.12.6.1  # Management of technical vulnerabilities
+      - A.14.2.1  # Secure development policy
+      - A.18.2.3  # Technical compliance review
+  nist:
+    enabled: true
+    functions:
+      - identify
+      - protect
+      - detect
+      - respond
+      - recover
+  cis:
+    enabled: true
+    version: "v8"
+    implementation_groups:
+      - IG1
+      - IG2
+  owasp:
+    enabled: true
+    top10_2021: true
+    api_top10: true
+    mobile_top10: true

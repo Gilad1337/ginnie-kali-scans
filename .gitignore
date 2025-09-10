@@ -1,0 +1,75 @@
+# Ginnie Cybersecurity Toolkit - Git Ignore
+
+# Logs and artifacts
+reports/artifacts/*/
+*.log
+*.tmp
+
+# Authorization files (security sensitive)
+AUTHORIZATION/authorization.json
+config/credentials.json
+config/api_keys.env
+
+# Tool outputs
+*.nmap
+*.xml
+*.html
+*.csv
+*.json.bak
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+temp/
+tmp/
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Cache directories
+.cache/
+__pycache__/
+*.pyc
+
+# Node modules (if any)
+node_modules/
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Tool-specific artifacts
+nuclei_output/
+zap_reports/
+scout_suite_reports/
+prowler_reports/
+trivy_cache/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# SSH keys and certificates
+*.pem
+*.key
+*.crt
+*.p12
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3

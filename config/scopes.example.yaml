@@ -1,0 +1,25 @@
+environments:
+  production:
+    domains:
+      - ginnie.co.il
+      - smartshop.co.il
+    cidr:
+      - 100.64.0.0/10
+    gcp_projects:
+      - ginnie-prod
+      - ginnie-cloud
+    services:
+      - Home Assistant
+      - Homebridge
+      - Scrypted
+      - AdGuardHome
+  staging:
+    domains:
+      - cloud.ginnie.co.il
+    cidr:
+      - 100.64.0.0/10
+    gcp_projects:
+      - ginnie-cloud
+    services:
+      - Home Assistant
+      - Homebridge
